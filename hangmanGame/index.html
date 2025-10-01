@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+    <title>Hangman</title>
+  </head>
+
+  <body>
+    <!-- Hauptkarte/Spielbereich. Das Layout (Größe/Rand) kommt aus styles.css -->
+    <main class="game">
+      <!-- Kopfbereich des Spiels (Status, Fehler, Neustart) -->
+      <header class="game-header">
+        <!-- Wir nutzen eine Liste für die drei Elemente, damit Abstände/Gruppierung einfach per CSS gehen -->
+        <ul class="header-items">
+          <!-- Status-Text (wird im JS aktualisiert, z.B. ACTIVE / WINNER / GAME OVER) -->
+          <li class="game-status">ACTIVE</li>
+
+          <!-- Fehlversuche-Anzeige. 
+               WICHTIG: hat eine ID, damit das Script diese Stelle leicht finden/aktualisieren kann -->
+          <li class="mistake-counter" id="mistakeCounter">FAILS: 0/10</li>
+
+          <!-- Neustart-Button. 
+               WICHTIG: hat eine ID, damit das Script den Klick-Event anbinden kann -->
+          <li>
+            <button class="new-game-button" id="newGameButton">NEW GAME</button>
+          </li>
+        </ul>
+      </header>
+
+      <!-- Spielfeld: enthält Wortanzeige, Bildschirm-Tastatur und Ergebnisbanner -->
+      <section class="game-area">
+        <!-- Aktuelles Wort als Liste von „Kästchen“.
+             Jede Position im Wort wird ein <li>. 
+             Der Text im <li> wird per JS eingesetzt.
+             aria-label hilft Screenreadern zu verstehen, was das ist. -->
+        <ul
+          class="current-word"
+          id="currentWord"
+          aria-label="current word"
+        ></ul>
+
+        <!-- Bildschirm-Tastatur: Auch eine Liste. 
+             JS erzeugt für jeden Buchstaben ein <li><button>...</button></li>.
+             Beim Klick ruft das Script die Rate-Funktion auf. -->
+        <ul
+          class="on-screen-keyboard"
+          id="onScreenKeyboard"
+          aria-label="on-screen keyboard"
+        ></ul>
+
+        <!-- Ergebnis-Banner (Gewonnen/Verloren-Meldung).
+             'role="alert"' + 'aria-live' = Screenreader lesen Änderungen direkt vor. 
+             Wird per JS ein-/ausgeblendet und mit Text befüllt. -->
+        <p
+          class="game-result"
+          id="gameResult"
+          role="alert"
+          aria-live="assertive"
+        ></p>
+      </section>
+    </main>
+  </body>
+</html>

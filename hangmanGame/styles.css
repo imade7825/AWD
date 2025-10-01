@@ -1,0 +1,198 @@
+/* ========= Global Reset ========= */
+/* Höhe definieren + einheitliches Box-Modell (Padding/Borders zählen in der Breite mit) */
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+/* Alle Elemente übernehmen das Box-Modell vom <html> */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0; /* Standardabstand entfernen */
+  min-height: 100svh; /* volle Bildschirmhöhe (safe viewport auf Mobile) */
+  display: grid;
+  place-items: center; /* Inhalt (die Karte) vertikal + horizontal zentrieren */
+  padding: clamp(8px, 2vw, 20px); /* Außenabstand skaliert zwischen 8–20px */
+  background: #111;
+  color: #111; /* dunkler Rand, Standardtextfarbe (Karte selbst ist weiß) */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; /* moderne Standardschrift */
+  overflow-x: hidden; /* verhindert horizontales Scrollen bei knappem Layout */
+}
+
+/* ========= Karte ========= */
+.game {
+  width: 100%; /* Karte nutzt volle verfügbare Breite */
+  background: #fff; /* weiße Kartenfläche */
+  border: 2px solid #111; /* Rahmen passend zum Stil */
+  padding: clamp(12px, 2.6vw, 22px); /* Innenabstand skaliert mit Viewport */
+}
+
+/* ========= Header: zentriert + gleiche Abstände ========= */
+.game-header {
+  padding-bottom: 12px; /* Abstand zur unteren Linie */
+  border-bottom: 2px solid #111; /* Trennlinie zum Spielfeld */
+  
+}
+
+.header-items {
+  list-style: none;
+  margin: 0;
+  padding: 0; /* UL-Liste ohne Punkte/Abstände */
+  display: flex; /* Flexbox für einfache Zentrierung */
+  justify-content: center; /* gesamte Gruppe mittig */
+  align-items: center; /* vertikal ausrichten */
+  gap: clamp(12px, 4vw, 24px); /* gleicher Abstand zwischen den 3 Items */
+  flex-wrap: wrap; /* auf kleinen Screens umbrechen */
+  width: 100%; /* UL über die volle Kartenbreite */
+}
+
+.header-items > li {
+  display: flex;
+  align-items: center;
+} /* Items selbst als Flex für saubere Vertikalität */
+
+.game-status {
+  font-weight: 800;
+  letter-spacing: 0.5px; /* fetter, leicht gesperrter Titel */
+  font-size: clamp(14px, 4vw, 18px); /* responsive Schriftgröße */
+  text-align: center; /* zentrierter Text */
+}
+
+.mistake-counter {
+  padding: clamp(4px, 1.2vw, 8px) clamp(8px, 2vw, 16px); /* Innenabstand skaliert */
+  background: #f7dada; /* zart-rot (Warn-Hintergrund) */
+  border: 2px solid #111; /* klarer Rahmen */
+  font-weight: 800; /* kräftige Zahlendarstellung */
+  font-size: clamp(12px, 3.5vw, 14px); /* responsive Schriftgröße */
+}
+
+.new-game-button {
+  appearance: none; /* systemeigene Button-Optik zurücksetzen */
+  border: 2px solid #111;
+  background: #fff; /* wie die restliche Karte */
+  padding: clamp(6px, 1.4vw, 10px) clamp(10px, 2.2vw, 14px); /* angenehmer Klickbereich */
+  font-weight: 800;
+  cursor: pointer; /* klarer, klickbarer Button */
+  font-size: clamp(12px, 3.5vw, 14px); /* responsive Schriftgröße */
+}
+.new-game-button:hover {
+  filter: brightness(0.96);
+} /* leichte Hover-Reaktion */
+.new-game-button:active {
+  transform: translateY(1px);
+} /* Klick-Feedback */
+
+/* kleine Screens: engeres Gap, Button darf volle Zeile nehmen */
+@media (max-width: 420px) {
+  .header-items {
+    gap: 10px 12px;
+  }
+  .new-game-button {
+    width: 100%;
+  }
+}
+
+/* ========= Spielfeld ========= */
+.game-area {
+  display: grid; /* einfache vertikale Stapelung */
+  gap: clamp(14px, 4vw, 26px); /* Abstand zwischen Wort, Tastatur, Banner */
+  padding: clamp(10px, 4vw, 28px) 6px 0; /* oberer Innenabstand skaliert */
+}
+
+/* ========= Wortanzeige ========= */
+.current-word {
+  list-style: none;
+  margin: 0;
+  padding: 0; /* saubere Liste ohne Punkte */
+  display: flex;
+  justify-content: center; /* mittig */
+  flex-wrap: wrap; /* bei langen Wörtern umbrechen */
+  gap: clamp(0.3rem, 1.6vw, 0.6rem); /* Abstand zwischen „Kästchen“ */
+  font: 700 clamp(16px, 7vw, 36px) ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace; /* fette Monospace-Schrift */
+  min-height: 2.4em; /* verhindert Springen, wenn Text wechselt */
+}
+.current-word li {
+  min-width: clamp(0.9ch, 5.5vw, 1.6ch); /* Breite eines Kästchens (skaliert) */
+  min-height: 2ch; /* Mindesthöhe für saubere Linie */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Buchstabe mittig im Kästchen */
+  border-bottom: 3px solid #111; /* Unterstrich-Linie (wenn Buchstabe leer ist) */
+}
+
+/* ========= On-Screen Keyboard ========= */
+.on-screen-keyboard {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0; /* mittig, ohne Punkte */
+  width: 100%;
+  max-width: 100%; /* niemals breiter als Karte */
+  display: grid;
+  /* so viele Spalten wie möglich; jede Taste min 22–40px breit, wächst bis 1fr */
+  grid-template-columns: repeat(auto-fit, minmax(clamp(22px, 8vw, 40px), 1fr));
+  gap: clamp(4px, 2vw, 8px); /* Abstand zwischen Tasten */
+}
+.on-screen-keyboard li {
+  display: block;
+} /* jedes LI ist ein Grid-Item */
+
+.on-screen-keyboard li > button {
+  width: 100%; /* Taste füllt die Spaltenbreite */
+  height: clamp(28px, 9.5vw, 44px); /* responsive Höhe */
+  background: #fff;
+  border: 2px solid #111; /* klare, klickbare Optik */
+  font-weight: 700;
+  text-transform: lowercase; /* gleiche Optik wie im Word-Grid */
+  cursor: pointer;
+  font-size: clamp(11px, 3.8vw, 16px); /* Schrift skaliert */
+}
+.on-screen-keyboard li > button:hover {
+  filter: brightness(0.96);
+} /* Hover-Feedback */
+.on-screen-keyboard li > button:active {
+  transform: translateY(1px);
+} /* Klick-Feedback */
+.on-screen-keyboard li > button:disabled {
+  background: #eee;
+  color: #888;
+  cursor: not-allowed;
+} /* deaktiviert */
+
+/* Feedback-Farben für richtige/falsche Buchstaben */
+.on-screen-keyboard li > button.good {
+  outline: 3px solid #2e7d32;
+  background: #e7f5ea;
+}
+.on-screen-keyboard li > button.bad {
+  outline: 3px solid #c62828;
+  background: #fde7e9;
+}
+
+/* ========= Ergebnisbanner ========= */
+.game-result {
+  text-align: center;
+  font-weight: 800;
+  display: none; /* standardmäßig versteckt */
+  padding: clamp(8px, 2.4vw, 12px);
+  border: 2px solid #111;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto; /* nicht zu breit */
+  font-size: clamp(14px, 4vw, 16px);
+}
+.game-result.show {
+  display: block;
+} /* JS schaltet diese Klasse an/aus */
+.game-result.win {
+  background: #dff5e4;
+} /* Gewinnfarbe */
+.game-result.lose {
+  background: #f7dada;
+} /* Verlustfarbe */
+
+
