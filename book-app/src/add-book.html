@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Add Book</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="column"><p class="logo">IT.Book.Library</p></div>
+          <div class="column">
+            <nav class="mainnav">
+              <a href="index.html" class="mainnav-link">Books</a>
+              <a href="favorite.html" class="mainnav-link">
+                Favorites
+                <span id="favorites-count" class="mainnav-number">0</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <h2>Add a new book</h2>
+      <form id="add-book-form">
+        <!-- Titel -->
+        <label for="title">Title</label>
+        <input id="title" type="text" required />
+
+        <!-- ISBN (bei dir Primärschlüssel in der API) -->
+        <label for="isbn">ISBN</label>
+        <input id="isbn" type="text" required />
+
+        <!-- Autor -->
+        <label for="author">Author</label>
+        <input id="author" type="text" required />
+
+        <!-- Publisher -->
+        <label for="publisher">Publisher</label>
+        <input id="publisher" type="text" required />
+
+        <!-- Optional-Felder passend zu deiner Struktur -->
+        <label for="subtitle">Subtitle</label>
+        <input id="subtitle" type="text" />
+
+        <label for="abstract">Abstract</label>
+        <textarea id="abstract"></textarea>
+
+        <label for="pages">Pages</label>
+        <input id="pages" type="number" min="1" />
+
+        <label for="cover">Cover URL</label>
+        <input id="cover" type="text" />
+
+        <button class="button" type="submit">Create</button>
+        <a class="button button-outline" href="index.html">Cancel</a>
+      </form>
+    </main>
+
+    <script type="module" src="js/add-book-page.js"></script>
+  </body>
+</html>
