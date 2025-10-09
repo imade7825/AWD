@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+
+    <!-- CSS Reset -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+
+    <!-- Milligram CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- You should properly set the path from the main file. -->
+    <title>Document</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="column"><p class="logo">IT.Book.Library</p></div>
+          <div class="column">
+            <nav class="mainnav">
+              <a href="index.html" class="mainnav-link mainnav-link--active"
+                >Books</a
+              >
+              <a href="favorite.html" class="mainnav-link"
+                >Favorites
+                <span id="favorites-count" class="mainnav-number">0</span></a
+              >
+              <a class="button" href="add-book.html">Add Book</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <h2><span id="books-count">0</span> Books displayed</h2>
+
+      <section class="row filter-search">
+        <form action="#" class="column">
+          <label for="search">Search by Title</label>
+          <input type="text" id="search" />
+        </form>
+
+        <form action="#" class="column column-33">
+          <label for="by-publisher">Filter by Publisher</label>
+          <select id="by-publisher">
+            <option value="-">-</option>
+            <option value="leanpub">Leanpub</option>
+            <option value="leanpub">McGraw-Hill</option>
+          </select>
+        </form>
+      </section>
+      <section class="row">
+        <div class="column">
+          <table>
+            <thead>
+              <tr>
+                <th class="first-col">&nbsp;</th>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody id="books-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="js/list-page.js"></script>
+  </body>
+</html>

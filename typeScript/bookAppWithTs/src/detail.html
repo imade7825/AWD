@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+
+    <!-- CSS Reset -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+
+    <!-- Milligram CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- You should properly set the path from the main file. -->
+    <title>Document</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="column"><p class="logo">IT.Book.Library</p></div>
+          <div class="column">
+            <nav class="mainnav">
+              <a href="index.html" class="mainnav-link mainnav-link--active"
+                >Books</a
+              >
+              <a href="favorite.html" class="mainnav-link"
+                >Favorites <span class="mainnav-number">2</span></a
+              >
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <h1 id="detail-title"></h1>
+      <section class="row">
+        <div class="column column-67">
+          <h3>Abstract</h3>
+          <p id="detail-abstract">
+            Web scraping or crawling is the art of fetching data from a third
+            party website by downloading and parsing the HTML code to extract
+            the data you want. It can be hard. From bad HTML code to heavy
+            Javascript use and anti-bot techniques, it is often tricky. Lots of
+            companies use it to obtain knowledge ...
+          </p>
+
+          <h4>Details</h4>
+          <ul id="detail-list">
+            <li><strong>Author:</strong> Kevin Sahin</li>
+            <li><strong>Publisher:</strong> Leanpub</li>
+            <li><strong>Pages:</strong> 115</li>
+          </ul>
+
+          <button
+            class="button button-outline"
+            onclick="location.href='index.html'"
+          >
+            Back
+          </button>
+          <button id="edit-book-button" class="button">Edit</button>
+          <button id="save-book-button" class="button is-hidden">Save</button>
+          <button id="cancel-edit-button" class="button button-outline is-hidden">
+            Cancel
+          </button>
+          <!-- Edit-Formular (zunächst versteckt) -->
+          <form id="edit-book-form" class="is-hidden">
+            <div class="row form-grid">
+              <div class="column">
+                <label for="edit-title">Title</label>
+                <input id="edit-title" type="text" required />
+              </div>
+              <div class="column">
+                <label for="edit-subtitle">Subtitle</label>
+                <input id="edit-subtitle" type="text" />
+              </div>
+            </div>
+
+            <div class="row form-grid">
+              <div class="column">
+                <label for="edit-author">Author</label>
+                <input id="edit-author" type="text" required />
+              </div>
+              <div class="column">
+                <label for="edit-publisher">Publisher</label>
+                <input id="edit-publisher" type="text" required />
+              </div>
+            </div>
+
+            <div class="row form-grid">
+              <div class="column">
+                <label for="edit-pages">Pages</label>
+                <input id="edit-pages" type="number" min="1" />
+              </div>
+              <div class="column">
+                <label for="edit-cover">Cover URL</label>
+                <input id="edit-cover" type="text" />
+              </div>
+            </div>
+
+            <label for="edit-abstract">Abstract</label>
+            <textarea id="edit-abstract" rows="5"></textarea>
+
+            <!-- ISBN nur anzeigen, NICHT änderbar (Identifier) -->
+            <label for="edit-isbn">ISBN (read-only)</label>
+            <input id="edit-isbn" type="text" readonly />
+          </form>
+          <button id="delete-book-button" class="button">Delete</button>
+        </div>
+        <div class="column column-33">
+          <img id="detail-cover" src="images/1001606140805.png" alt="" />
+        </div>
+      </section>
+    </main>
+    <script type="module" src="js/details-page.js"></script>
+  </body>
+</html>
