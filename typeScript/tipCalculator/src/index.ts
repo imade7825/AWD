@@ -95,7 +95,7 @@ type CalculationResult = {
   totalAmount: number;
   amountPerPerson?: number;
 };
-
+//test ts
 /** Rechnet Trinkgeld, Gesamt und ggf. pro Person. Keine I/O hier drin. */
 function calculateBillSummary(
   billAmount: number,
@@ -146,7 +146,6 @@ async function askForNumber(
 ): Promise<number> {
   const { min, allowZero } = options;
 
-  
   while (true) {
     const rawAnswer = await askConsoleQuestion(consoleInterface, `${label}`);
     const parsedNumber = parseDecimalFromUserInput(rawAnswer);
