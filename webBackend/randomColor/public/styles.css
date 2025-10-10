@@ -1,0 +1,139 @@
+/* ==== Base / Grundlayout ================================================== */
+/* Body bekommt weiche Übergänge und übernimmt die Hintergrundfarbe aus JS */
+body {
+  margin: 0;
+  font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Zentrierter Seiten-Container */
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* ==== Card / Panel ======================================================== */
+/* Halbtransparente Karte mit Blur und Schatten */
+.panel {
+  width: min(720px, 92vw);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+
+  /* WICHTIG: Eigene Textfarbe, damit Inhalte nie weiß auf weiß werden */
+  color: #111111;
+}
+
+/* Kopfzeilen-Layout, Buttons-Gruppe etc. */
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+}
+
+/* ==== Grid / Boxes ======================================================== */
+/* Raster für die drei Werte-Boxen */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* Einspaltig auf kleinen Bildschirmen */
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Weiße Boxen mit weichem Schatten */
+.box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 8px;
+
+  /* WICHTIG: Eigene Textfarbe innerhalb der Box erzwingen */
+  color: #111111;
+}
+
+/* Dezente Labels */
+.label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+}
+
+/* Monospace-Werte für bessere Kopierbarkeit */
+.value {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 18px;
+  word-break: break-word;
+}
+
+/* ==== Buttons ============================================================= */
+/* Einheitliche Button-Optik (Textfarbe explizit dunkel für Lesbarkeit) */
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.05s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+/* ==== Footer / Status ===================================================== */
+.footer .status,
+.status {
+  font-size: 12px;
+  opacity: 0.8;
+
+  /* Sicherstellen, dass der Status-Text in der Karte gut lesbar bleibt */
+  color: #111111;
+}
+
+/* ==== Optional: kleine Helfer ============================================ */
+/* Entfernt Standardabstände von h2 innerhalb der Karte auf alten Browsern */
+.panel h2 {
+  margin: 0;
+  color: #111111; /* redundante Absicherung */
+}
+
+/* Buttons-Gruppe in der Kopfzeile */
+.controls {
+  gap: 10px;
+}

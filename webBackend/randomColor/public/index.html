@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!-- Sagt dem Browser, dass modernes HTML5 verwendet wird -->
+<html lang="en">
+  <!-- Dokumentensprache ist Englisch -->
+  <head>
+    <!-- Kopfbereich mit Metadaten beginnt -->
+    <meta charset="utf-8" />
+    <!-- Zeichensatz auf UTF-8 setzen -->
+    <title>Random Color Generator</title>
+    <!-- Titel, der im Browser-Tab erscheint -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Sorgt für responsive Darstellung -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- Bindet die ausgelagerte CSS-Datei aus /public ein -->
+  </head>
+  <!-- Kopfbereich endet -->
+  <body>
+    <!-- Sichtbarer Dokumentbereich beginnt -->
+    <div class="page">
+      <!-- Zentrierter Seiten-Container -->
+      <div class="panel" role="region" aria-label="Random color generator">
+        <!-- Inhaltspanel mit ARIA-Label -->
+        <div class="row">
+          <!-- Kopfzeile mit Titel und Buttons -->
+          <h2 class="title">Random Color Generator</h2>
+          <!-- Überschrift der App -->
+          <div class="row controls">
+            <!-- Gruppe für Steuer-Buttons -->
+            <button id="newColorButton">New Color</button>
+            <!-- Button, um eine neue Farbe zu holen -->
+          </div>
+          <!-- Ende der Button-Gruppe -->
+        </div>
+        <!-- Ende der Kopfzeile -->
+
+        <div class="grid">
+          <!-- Raster mit drei Infoboxen -->
+          <div class="box">
+            <!-- Box für Hex -->
+            <div class="row space-between">
+              <!-- Zeile mit Label und Copy-Button -->
+              <div class="label">Hex</div>
+              <!-- Text-Label für Hex -->
+              <button class="copyButton" data-target-id="hexadecimalValue">
+                Copy
+              </button>
+              <!-- Button kopiert den Hex-Text -->
+            </div>
+            <!-- Zeile endet -->
+            <div class="value" id="hexadecimalValue">—</div>
+            <!-- Anzeige des Hex-Werts -->
+          </div>
+          <!-- Box endet -->
+
+          <div class="box">
+            <!-- Box für RGB -->
+            <div class="row space-between">
+              <!-- Zeile mit Label und Copy-Button -->
+              <div class="label">RGB</div>
+              <!-- Text-Label für RGB -->
+              <button class="copyButton" data-target-id="rgbValue">Copy</button>
+              <!-- Button kopiert den RGB-Text -->
+            </div>
+            <!-- Zeile endet -->
+            <div class="value" id="rgbValue">—</div>
+            <!-- Anzeige des RGB-Werts -->
+          </div>
+          <!-- Box endet -->
+
+          <div class="box">
+            <!-- Box für HSL -->
+            <div class="row space-between">
+              <!-- Zeile mit Label und Copy-Button -->
+              <div class="label">HSL</div>
+              <!-- Text-Label für HSL -->
+              <button class="copyButton" data-target-id="hslValue">Copy</button>
+              <!-- Button kopiert den HSL-Text -->
+            </div>
+            <!-- Zeile endet -->
+            <div class="value" id="hslValue">—</div>
+            <!-- Anzeige des HSL-Werts -->
+          </div>
+          <!-- Box endet -->
+        </div>
+        <!-- Raster endet -->
+
+        <div class="row footer">
+          <!-- Fußbereich mit Status -->
+          <span class="status" id="statusMessage" aria-live="polite"
+            >Body background shows the chosen color.</span
+          >
+          <!-- Live-Status-Text -->
+        </div>
+        <!-- Fußbereich endet -->
+      </div>
+      <!-- Panel endet -->
+    </div>
+    <!-- Seiten-Container endet -->
+
+    <script>
+      "use strict"; // Aktiviert strengen Modus für sichereres JavaScript
+
+      const apiEndpointUrl = "/api/random-color"; // Relativer Pfad zur API (kein CORS nötig, da gleicher Origin)
+
+      const elementHexadecimal = document.getElementById("hexadecimalValue"); // Referenz auf Hex-Ausgabefeld
+      const elementRgb = document.getElementById("rgbValue"); // Referenz auf RGB-Ausgabefeld
+      const elementHsl = document.getElementById("hslValue"); // Referenz auf HSL-Ausgabefeld
+      const buttonNewColor = document.getElementById("newColorButton"); // Referenz auf "New Color"-Button
+
+      const elementStatus = document.getElementById("statusMessage"); // Referenz auf Statuszeile
+
+      function applyBodyBackgroundFromHex(hexadecimalString) {
+        // Setzt Hintergrundfarbe und wählt lesbare Schriftfarbe
+        document.body.style.backgroundColor = hexadecimalString; // Setzt Body-Hintergrund auf die Hex-Farbe
+        const match = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+          hexadecimalString
+        ); // Zerlegt Hex in RGB-Kanäle
+        let red = 255,
+          green = 255,
+          blue = 255; // Fallback-Werte, falls Parsing fehlschlägt
+        if (match) {
+          // Wenn Parsing erfolgreich war
+          red = parseInt(match[1], 16); // Wandelt ersten Kanal in Dezimal (Rot)
+          green = parseInt(match[2], 16); // Wandelt zweiten Kanal in Dezimal (Grün)
+          blue = parseInt(match[3], 16); // Wandelt dritten Kanal in Dezimal (Blau)
+        }
+        const relativeLuminance =
+          (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255; // Berechnet Helligkeit für Lesbarkeit
+        const recommendedTextColor =
+          relativeLuminance > 0.6 ? "#111111" : "#FFFFFF"; // Wählt Schwarz bei hellen Hintergründen, sonst Weiß
+        document.body.style.color = recommendedTextColor; // Setzt die Textfarbe global
+      }
+
+      async function fetchAndDisplayNewColor() {
+        // Holt neue Farbe von der API und zeigt sie an
+
+        try {
+          // Versucht, die API aufzurufen
+          const response = await fetch(apiEndpointUrl, { cache: "no-store" }); // Holt JSON ohne Cache (immer frisch)
+          if (!response.ok) throw new Error(`HTTP ${response.status}`); // Fehler, falls Status nicht OK
+          const colorPayload = await response.json(); // Liest JSON-Body aus der Antwort
+          elementHexadecimal.textContent = colorPayload.hex; // Trägt Hex-Text in die UI ein
+          elementRgb.textContent = colorPayload.rgb; // Trägt RGB-Text in die UI ein
+          elementHsl.textContent = colorPayload.hsl; // Trägt HSL-Text in die UI ein
+          applyBodyBackgroundFromHex(colorPayload.hex); // Setzt Body-Hintergrund passend zur Farbe
+          elementStatus.textContent = "Loaded a new random color!."; // Setzt Erfolgsmeldung
+        } catch (error) {
+          // Fängt Netzwerk-/Parsingfehler
+          console.error(error); // Loggt Details in der Konsole
+          elementStatus.textContent =
+            "Failed to reach the API. Is the server running!"; // Zeigt Nutzerfreundliche Meldung
+        }
+      }
+
+      async function copyValueByElementId(elementId) {
+        // Kopiert den Textinhalt eines Elements in die Zwischenablage
+        const element = document.getElementById(elementId); // Holt Element anhand der ID
+        const textToCopy = element?.textContent?.trim(); // Liest und säubert den Text
+        if (!textToCopy) return; // Nichts zu kopieren → Abbruch
+        try {
+          // Versucht den Kopiervorgang
+          await navigator.clipboard.writeText(textToCopy); // Schreibt Text in die Zwischenablage
+          elementStatus.textContent = "Copied to clipboard."; // Bestätigung für den Nutzer
+        } catch {
+          // Bei fehlenden Rechten (z. B. unsicherer Kontext)
+          elementStatus.textContent =
+            "Clipboard access blocked. Try running over HTTPS."; // Hinweis für Lösung
+        }
+      }
+
+      document.querySelectorAll(".copyButton").forEach((button) => {
+        // Hängt Kopier-Handler an alle Copy-Buttons
+        button.addEventListener("click", () => {
+          // Reagiert auf Klick
+          const targetId = button.getAttribute("data-target-id"); // Liest die Ziel-ID aus dem data-Attribut
+          if (targetId) copyValueByElementId(targetId); // Führt Kopieren aus, falls ID vorhanden
+        }); // Ende des Klick-Handlers
+      }); // Ende der Schleife
+
+      buttonNewColor.addEventListener("click", fetchAndDisplayNewColor); // Verknüpft Button mit Farbnachladen
+
+      fetchAndDisplayNewColor(); // Lädt beim ersten Öffnen sofort eine Farbe
+    </script>
+  </body>
+  <!-- Sichtbarer Dokumentbereich endet -->
+</html>
+<!-- HTML-Dokument endet -->
